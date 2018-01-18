@@ -1,0 +1,68 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.dokka-android'
+
+ext {
+    bintrayRepo = 'TesseractGroup'
+    bintrayName = 'Reactor'
+
+    publishedGroupId = 'io.tesseractgroup.reactor'
+    libraryName = 'reactor'
+    artifact = 'reactor'
+
+    libraryDescription = 'Unidirectional data flow'
+
+    siteUrl = 'https://www.tesseractgroup.io'
+    gitUrl = 'https://github.com/horsejockey/reactor-android.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'mcart3'
+    developerName = 'Matthew McArthur'
+    developerEmail = 'matthew.s.mcarthur@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaAndroidTask) {
+    outputFormat = 'javadoc'
+    outputDirectory = "$buildDir/javadoc"
+}
+
+android {
+    compileSdkVersion 26
+
+
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compileOnly 'com.android.support:appcompat-v7:26.1.0'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+apply from: rootProject.file('bintray.gradle')
