@@ -19,6 +19,9 @@ interface Command<StateType> where StateType : State {
     fun execute(state: StateType, core: Core<StateType>)
 }
 
+val <T: State> Command<T>.key: String
+    get() = "${this::class}"
+
 interface Middleware<StateType> where StateType : State {
     fun process(event: Event, state: StateType)
 }
