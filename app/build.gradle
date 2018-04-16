@@ -8,7 +8,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "io.tesseractgroup.reactor"
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -28,4 +28,7 @@ dependencies {
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'
+
+    implementation 'io.tesseractgroup:messagerouter:1.0.1'
+    implementation 'io.tesseractgroup:purestatemachine:1.0.0'
 }

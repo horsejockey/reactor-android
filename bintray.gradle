@@ -47,7 +47,7 @@ publishing {
                 root.children().last() + pomConfig
 
                 def dependenciesNode = root.appendNode('dependencies')
-                configurations.compile.allDependencies.each {
+                configurations.api.allDependencies.each {
                     if (it.group && it.name && it.version) {
                         def dependencyNode = dependenciesNode.appendNode('dependency')
                         dependencyNode.appendNode('groupId', it.group)
