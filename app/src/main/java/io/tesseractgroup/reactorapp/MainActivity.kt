@@ -62,7 +62,11 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        App.core.stateChanged.add(this){ state ->
+        App.core.stateChanged.add(this) { state ->
+            return@add Unit
+        }
+
+        App.core.stateChanged.add(this){ state: AppState ->
             textView.text = state.name
         }
     }
