@@ -4,41 +4,37 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import io.tesseractgroup.reactor.Command
 import io.tesseractgroup.reactor.Core
-import io.tesseractgroup.reactor.Event
+import io.tesseractgroup.reactor.CoreUpdate
+import io.tesseractgroup.reactor.EventHandler
 import kotlinx.android.synthetic.main.activity_main.*
 
 object App{
 
-    private val handler = fun(state: AppState, event: Event ): Pair<AppState, Command> {
-        val updatedState: AppState
-
+    private val handler: EventHandler<AppState, Event, Command> = fun(state, event): CoreUpdate<AppState, Command> {
         when(event){
             is AppEvent -> {
                 when(event){
                     is AppEvent.UpdateName -> {
                         val updatedState = state.copy(name = event.name)
-                        return Pair(updatedState, AppCommand.NoOp())
+                        return CoreUpdate.State(updatedState)
                     }
                 }
             }
         }
 
-        return Pair(state, AppCommand.NoOp())
-
+        return CoreUpdate.NoUpdate()
     }
 
 
-    val core = Core<AppState>(AppState("Hello World"), listOf(), handler)
+    val core = Core(AppState("Hello World"), listOf(), handler)
 }
+
+interface Event
+interface Command
 
 sealed class AppEvent: Event {
     data class UpdateName(val name: String?): AppEvent()
-}
-
-sealed class AppCommand: Command {
-    class NoOp: AppCommand()
 }
 
 data class AppState(val name: String?)
@@ -61,10 +57,6 @@ class MainActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
         })
-
-        App.core.stateChanged.add(this) { state ->
-            return@add Unit
-        }
 
         App.core.stateChanged.add(this){ state: AppState ->
             textView.text = state.name
