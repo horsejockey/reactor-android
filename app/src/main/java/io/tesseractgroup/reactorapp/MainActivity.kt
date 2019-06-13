@@ -4,26 +4,26 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import io.tesseractgroup.purestatemachine.StateUpdate
 import io.tesseractgroup.reactor.Core
-import io.tesseractgroup.reactor.CoreUpdate
 import io.tesseractgroup.reactor.EventHandler
 import kotlinx.android.synthetic.main.activity_main.*
 
 object App{
 
-    private val handler: EventHandler<AppState, Event, Command> = fun(state, event): CoreUpdate<AppState, Command> {
+    private val handler: EventHandler<AppState, Event, Command> = fun(state, event): StateUpdate<AppState, Command> {
         when(event){
             is AppEvent -> {
                 when(event){
                     is AppEvent.UpdateName -> {
                         val updatedState = state.copy(name = event.name)
-                        return CoreUpdate.State(updatedState)
+                        return StateUpdate.State(updatedState)
                     }
                 }
             }
         }
 
-        return CoreUpdate.NoUpdate()
+        return StateUpdate.NoUpdate()
     }
 
 
