@@ -17,6 +17,7 @@ class Core<State : Any, Event : Any, Command : Any>(
     handler: EventHandler<State, Event, Command>) {
 
     val stateChanged = MessageRouter<State>()
+    val commandRouter = MessageRouter<Command>()
     var currentState: State
         get() = stateMachine.currentState
         private set(value) {}
@@ -30,10 +31,12 @@ class Core<State : Any, Event : Any, Command : Any>(
         stateChanged.send(currentState)
         for (command in commands){
             commandProcessors.forEach { it(this, command) }
+            commandRouter.send(command)
         }
     }
 
     fun perform(command: Command){
         commandProcessors.forEach { it(this, command) }
+        commandRouter.send(command)
     }
 }
